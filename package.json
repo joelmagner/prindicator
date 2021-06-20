@@ -1,9 +1,9 @@
 {
   "name": "vsprindicator",
-  "displayName": "VSPRindicator",
-  "description": "Notification icon for Pull Requests",
-  "publisher": "joelmagner",
-  "version": "0.0.1",
+  "displayName": "PR Indicator",
+  "description": "Notifications for Pull Requests",
+  "publisher": "MagnerJoel",
+  "version": "0.0.2",
   "engines": {
     "vscode": "^1.54.0"
   },
