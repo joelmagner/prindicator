@@ -52,7 +52,7 @@ export async function activate(context: vscode.ExtensionContext) {
         .showInformationMessage(`Login to github!`, "Sign in")
         .then((selection) => {
           if (selection === "Sign in") {
-            vscode.commands.executeCommand("vsprindicator.authenticateGithub");
+            vscode.commands.executeCommand("prindicator.authenticateGithub");
           }
         });
     } else {
@@ -62,7 +62,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
   context.subscriptions.push(
     vscode.commands.registerCommand(
-      "vsprindicator.authenticateGithub",
+      "prindicator.authenticateGithub",
       async () => {
         if (!credentials) {
           credentials = new Credentials();
@@ -79,7 +79,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
   // context.subscriptions.push(
   //   vscode.commands.registerCommand(
-  //     "vsprindicator.resetWorkspace",
+  //     "prindicator.resetWorkspace",
   //     async () => {
   //       context.globalState.update("PR", []);
   //     }
@@ -88,7 +88,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
   // context.subscriptions.push(
   //   vscode.commands.registerCommand(
-  //     "vsprindicator.displayNotification",
+  //     "prindicator.displayNotification",
   //     async () => {
   //       /**
   //        * Octokit (https://github.com/octokit/rest.js#readme) is a library for making REST API
@@ -112,13 +112,13 @@ export async function activate(context: vscode.ExtensionContext) {
   // );
 
   // context.subscriptions.push(
-  //   vscode.commands.registerCommand("vsprindicator.displayNotification", () => {
+  //   vscode.commands.registerCommand("prindicator.displayNotification", () => {
   //     // HelloWorldPanel.createOrShow(context.extensionUri);
   //   })
   // );
 
   // context.subscriptions.push(
-  //   vscode.commands.registerCommand("vsprindicator.askQuestion", async () => {
+  //   vscode.commands.registerCommand("prindicator.askQuestion", async () => {
   //     await retrieveGitInformation();
   //   })
   // );

@@ -12,7 +12,7 @@ None for now, will probably add timer option.
 
 This extension contributes the following settings:
 
-- `vsprindicator.authenticateGithub`: signin to github
+- `prindicator.authenticateGithub`: signin to github
 - Accessed via `cmd+shift+p` : `> 'PR Indicator'`
 
 ## Known Issues

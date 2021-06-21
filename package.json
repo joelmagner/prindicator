@@ -4,10 +4,10 @@
   "description": "Notifications for Pull Requests",
   "icon": "media/prindicator.png",
   "repository": {
-    "url": "https://github.com/joelmagner/vsprindicator"
+    "url": "https://github.com/joelmagner/prindicator"
   },
   "publisher": "MagnerJoel",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "engines": {
     "vscode": "^1.54.0"
   },
