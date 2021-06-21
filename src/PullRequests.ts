@@ -25,9 +25,6 @@ export class PullRequests {
 
     const userInfo = await this._octokit.users.getAuthenticated();
     this._userInfo = userInfo;
-    // vscode.window.showInformationMessage(
-    //   `Logged into GitHub as ${userInfo.data.login}`
-    // );
     return { userInfo, octokit };
   }
 

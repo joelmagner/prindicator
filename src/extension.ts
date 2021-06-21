@@ -1,5 +1,3 @@
-import { Octokit } from "@octokit/rest";
-import { ResponseHeaders } from "@octokit/types";
 import * as vscode from "vscode";
 import { GitExtension } from "../git";
 import { Credentials } from "./GitHubOAuth";
