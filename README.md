@@ -1,4 +1,4 @@
-# VS PR Indicator
+# PR Indicator
 
 ## Features
 
