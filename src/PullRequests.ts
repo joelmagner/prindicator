@@ -1,8 +1,5 @@
 import * as vscode from "vscode";
-import { getNonce } from "./getNonce";
 import { Credentials } from "./GitHubOAuth";
-import { PaginateInterface } from "@octokit/plugin-paginate-rest";
-import { RestEndpointMethods } from "@octokit/plugin-rest-endpoint-methods/dist-types/generated/method-types";
 import { Octokit } from "@octokit/rest";
 
 export class PullRequests {
@@ -26,11 +23,11 @@ export class PullRequests {
     this._octokit = await this._credentials.getOctokit();
     const octokit = await this._credentials.getOctokit();
 
-    const userInfo = await (await this._octokit).users.getAuthenticated();
+    const userInfo = await this._octokit.users.getAuthenticated();
     this._userInfo = userInfo;
-    vscode.window.showInformationMessage(
-      `Logged into GitHub as ${userInfo.data.login}`
-    );
+    // vscode.window.showInformationMessage(
+    //   `Logged into GitHub as ${userInfo.data.login}`
+    // );
     return { userInfo };
   }
 
@@ -127,9 +124,11 @@ export class PullRequests {
           this.META_DATA.prs - this.META_DATA.isOwn
         } open pull requests in this repository! (${
           this.META_DATA.completed !== 0
-            ? (this.META_DATA.completed /
-                (this.META_DATA.prs - this.META_DATA.isOwn)) *
-              100
+            ? (
+                (this.META_DATA.completed /
+                  (this.META_DATA.prs - this.META_DATA.isOwn)) *
+                100
+              ).toFixed(2)
             : 0
         }% done)`
       );

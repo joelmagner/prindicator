@@ -3,7 +3,7 @@
   "displayName": "PR Indicator",
   "description": "Notifications for Pull Requests",
   "publisher": "MagnerJoel",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "engines": {
     "vscode": "^1.54.0"
   },
