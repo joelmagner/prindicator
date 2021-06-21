@@ -11,7 +11,7 @@ export async function activate(context: vscode.ExtensionContext) {
   // https://github.com/eamodio/vscode-gitlens/blob/e556d3302d6b72982721d73d07105aeeea0b8a74/src/git/models/repository.ts#L151
 
   const pullRequests = new PullRequests(context);
-  const { userInfo } = await pullRequests.authenticateGithub();
+  let { userInfo, octokit } = await pullRequests.authenticateGithub();
 
   const retrieveGitInformation = async () => {
     gitExtension =
@@ -60,31 +60,31 @@ export async function activate(context: vscode.ExtensionContext) {
     }
   }, 15 * 60 * 60); //TODO: ändra till 5min eller ngt.
 
-  // context.subscriptions.push(
-  //   vscode.commands.registerCommand(
-  //     "vsprindicator.authenticateGithub",
-  //     async () => {
-  //       if (!credentials) {
-  //         credentials = new Credentials();
-  //       }
-  //       await credentials.initialize(context);
-  //       octokit = await credentials.getOctokit();
-  //       userInfo = await (await octokit).users.getAuthenticated();
-  //       vscode.window.showInformationMessage(
-  //         `Logged into GitHub as ${userInfo.data.login}`
-  //       );
-  //     }
-  //   )
-  // );
-
   context.subscriptions.push(
     vscode.commands.registerCommand(
-      "vsprindicator.resetWorkspace",
+      "vsprindicator.authenticateGithub",
       async () => {
-        context.globalState.update("PR", []);
+        if (!credentials) {
+          credentials = new Credentials();
+        }
+        await credentials.initialize(context);
+        octokit = await credentials.getOctokit();
+        userInfo = await octokit.users.getAuthenticated();
+        vscode.window.showInformationMessage(
+          `Logged into GitHub as ${userInfo.data.login}`
+        );
       }
     )
   );
+
+  // context.subscriptions.push(
+  //   vscode.commands.registerCommand(
+  //     "vsprindicator.resetWorkspace",
+  //     async () => {
+  //       context.globalState.update("PR", []);
+  //     }
+  //   )
+  // );
 
   // context.subscriptions.push(
   //   vscode.commands.registerCommand(

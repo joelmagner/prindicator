@@ -21,25 +21,15 @@ export class PullRequests {
     await this._credentials.initialize(this._context);
 
     this._octokit = await this._credentials.getOctokit();
-    const octokit = await this._credentials.getOctokit();
+    const octokit = this._octokit;
 
     const userInfo = await this._octokit.users.getAuthenticated();
     this._userInfo = userInfo;
     // vscode.window.showInformationMessage(
     //   `Logged into GitHub as ${userInfo.data.login}`
     // );
-    return { userInfo };
+    return { userInfo, octokit };
   }
-
-  // public savePRsToLocalStorage(prs: number[]) {
-  //   const oldPrs: number[] | undefined = this._context.globalState.get("PR");
-  //   const stillActivePrs = oldPrs?.filter((x) => prs.includes(x));
-  //   const addNewPrs = prs.filter((x) => !oldPrs?.includes(x));
-  //   const currPrs = addNewPrs.concat(stillActivePrs || []);
-
-  //   this._context.globalState.update("PR", currPrs);
-  //   return;
-  // }
 
   public wasRecentPullRequest = (
     prCreatedDate: string,
@@ -49,10 +39,6 @@ export class PullRequests {
     const createdAt = new Date(prCreatedDate).getTime();
     return Math.abs(now - createdAt) / 60000 < withinMinutes;
   };
-
-  // public storedPrsInMemory = (): number[] | undefined => {
-  //   return this._context.globalState.get("PR");
-  // };
 
   public getAllPrs = async (owner: string, repo: string) => {
     return await this._octokit.pulls
@@ -97,7 +83,6 @@ export class PullRequests {
           ? true
           : false;
       });
-      // console.log(comments, youHaveApprovedPr, isOwnPr);
 
       if (youHaveApprovedPr) this.META_DATA.completed++;
 

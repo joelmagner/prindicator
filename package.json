@@ -1,9 +1,10 @@
 {
-  "name": "vsprindicator",
+  "name": "prindicator",
   "displayName": "PR Indicator",
   "description": "Notifications for Pull Requests",
+  "icon": "media/prindicator.png",
   "publisher": "MagnerJoel",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "engines": {
     "vscode": "^1.54.0"
   },
@@ -14,21 +15,15 @@
     "vscode.git"
   ],
   "activationEvents": [
-    "onCommand:vsprindicator.authenticateGithub",
-    "onCommand:vsprindicator.resetWorkspace",
+    "onCommand:prindicator.authenticateGithub",
     "onStartupFinished"
   ],
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "vsprindicator.authenticateGithub",
+        "command": "prindicator.authenticateGithub",
         "title": "Authenticate To Github",
-        "category": "PR Indicator"
-      },
-      {
-        "command": "vsprindicator.resetWorkspace",
-        "title": "Reset Workspace storage",
         "category": "PR Indicator"
       }
     ]
