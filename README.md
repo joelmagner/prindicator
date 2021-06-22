@@ -28,7 +28,7 @@ This extension contributes the following settings:
 
 ## Release Notes
 
-### 1.0.3
+### 1.0.4
 
 - User stored settings
 - Set custom interval to github _(15min by default)_

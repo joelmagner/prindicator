@@ -29,7 +29,6 @@ export class PullRequests {
       "displaySummary",
       false
     ) as boolean;
-    console.log("DISPLAY SUMMARY", state);
     return state;
   }
 
@@ -39,7 +38,6 @@ export class PullRequests {
 
   public getUpdateTimer(): number {
     const timer = parseInt(this._context.globalState.get("updateTimer", "15"));
-    console.log("TIMER", timer);
     if (timer && timer >= 5) return timer;
 
     return 15; // 15 min default.
