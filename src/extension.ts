@@ -56,7 +56,7 @@ export async function activate(context: vscode.ExtensionContext) {
     } else {
       await pullRequests.checkForNewPRs(git.owner, git.repo);
     }
-  }, pullRequests.getUpdateTimer()); //TODO: ändra till 5min eller ngt.
+  }, pullRequests.USER_SETTINGS.updateTimer * 1000 * 60); //TODO: ändra till 5min eller ngt.
 
   context.subscriptions.push(
     vscode.commands.registerCommand(
@@ -77,30 +77,37 @@ export async function activate(context: vscode.ExtensionContext) {
 
   context.subscriptions.push(
     vscode.commands.registerCommand("prindicator.displaySummary", async () => {
-      vscode.window
-        .showQuickPick(["Yes", "No"], {
-          placeHolder: `Set wheather to display a summary message or not. Currently: ${pullRequests.getDisplaySummary()}`,
-          canPickMany: false,
-        })
-        .then(async (selection) => {
-          if (!selection) return;
-          await pullRequests.setDisplaySummary(selection === "Yes");
-        });
+      const option = await vscode.window.showQuickPick(["Yes", "No"], {
+        placeHolder: `Set wheather to display a summary message or not. Currently: ${pullRequests.getDisplaySummary()}`,
+        canPickMany: false,
+        ignoreFocusOut: true,
+      });
+
+      if (option) {
+        await Promise.resolve(
+          await pullRequests.setDisplaySummary(option === "Yes")
+        );
+      }
+      return Promise.resolve(1);
     })
   );
 
   context.subscriptions.push(
     vscode.commands.registerCommand("prindicator.setUpdateTimer", async () => {
-      vscode.window
-        .showQuickPick(["5", "10", "15", "20", "25", "30", "50", "60"], {
+      const option = await vscode.window.showQuickPick(
+        ["5", "10", "15", "20", "25", "30", "50", "60"],
+        {
           placeHolder: `Set the update interval to GitHub. Current Value: ${pullRequests.getUpdateTimer()} minutes`,
           canPickMany: false,
-        })
-        .then(async (selection) => {
-          if (!selection) return;
-          const duration = parseInt(selection);
-          await pullRequests.setUpdateTimer(duration);
-        });
+          ignoreFocusOut: true,
+        }
+      );
+
+      if (option) {
+        const duration = parseInt(option ?? "15");
+        await Promise.resolve(await pullRequests.setUpdateTimer(duration));
+      }
+      return Promise.resolve(1);
     })
   );
 

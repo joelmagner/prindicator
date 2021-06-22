@@ -7,7 +7,7 @@
     "url": "https://github.com/joelmagner/prindicator"
   },
   "publisher": "MagnerJoel",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "engines": {
     "vscode": "^1.54.0"
   },
@@ -35,7 +35,7 @@
         "category": "PR Indicator"
       },
       {
-        "command": "prindicator.setRefreshTimer",
+        "command": "prindicator.setUpdateTimer",
         "title": "Set Refresh Timer",
         "category": "PR Indicator"
       }

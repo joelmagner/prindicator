@@ -9,13 +9,19 @@ export class PullRequests {
 
   INITIAL_MESSAGE = true;
   META_DATA = { prs: 0, completed: 0, isOwn: 0 };
+  public USER_SETTINGS: { updateTimer: number; displaySummary: boolean };
 
   constructor(private readonly _context: vscode.ExtensionContext) {
     this._credentials = new Credentials();
+    this.USER_SETTINGS = {
+      displaySummary: this.getDisplaySummary(),
+      updateTimer: this.getUpdateTimer(),
+    };
   }
 
   public async setDisplaySummary(value: boolean): Promise<void> {
     await this._context.globalState.update("displaySummary", value);
+    this.USER_SETTINGS.displaySummary = value;
   }
 
   public getDisplaySummary(): boolean {
@@ -23,6 +29,7 @@ export class PullRequests {
       "displaySummary",
       false
     ) as boolean;
+    console.log("DISPLAY SUMMARY", state);
     return state;
   }
 
@@ -31,7 +38,8 @@ export class PullRequests {
   }
 
   public getUpdateTimer(): number {
-    const timer = this._context.globalState.get("updateTimer", 15);
+    const timer = parseInt(this._context.globalState.get("updateTimer", "15"));
+    console.log("TIMER", timer);
     if (timer && timer >= 5) return timer;
 
     return 15; // 15 min default.
@@ -63,7 +71,7 @@ export class PullRequests {
         owner,
         repo,
       })
-      .then((x) => x.data);
+      .then((x) => x?.data);
   };
 
   public getPrComments = async (
@@ -74,7 +82,7 @@ export class PullRequests {
     return await this._octokit.pulls
       .listReviews({ owner, repo, pull_number })
       .then((x) => x.data)
-      .catch((x) => console.log("ERR!!!!", x));
+      .catch((x) => console.log("Fetching Comments", x));
   };
 
   public checkForNewPRs = async (owner: string, repo: string) => {
@@ -84,6 +92,8 @@ export class PullRequests {
     this.META_DATA.prs = 0;
 
     const prs = await this.getAllPrs(owner, repo);
+
+    if (!prs) return;
 
     this.META_DATA.prs = prs.length;
 
@@ -107,7 +117,10 @@ export class PullRequests {
 
       if (
         !isOwnPr &&
-        this.wasRecentPullRequest(prs[pr].created_at, this.getUpdateTimer())
+        this.wasRecentPullRequest(
+          prs[pr].created_at,
+          this.USER_SETTINGS.updateTimer
+        )
       ) {
         vscode.window
           .showInformationMessage(
@@ -122,20 +135,19 @@ export class PullRequests {
       }
     }
 
-    if (this.INITIAL_MESSAGE) {
+    if (this.INITIAL_MESSAGE && this.USER_SETTINGS.displaySummary) {
       this.INITIAL_MESSAGE = false;
-      if (!this.getDisplaySummary()) return;
 
       vscode.window.showInformationMessage(
         `There are ${
           this.META_DATA.prs - this.META_DATA.isOwn
         } open pull requests in this repository! (${
-          this.META_DATA.completed !== 0
+          this.META_DATA.completed > 0
             ? (
                 (this.META_DATA.completed /
                   (this.META_DATA.prs - this.META_DATA.isOwn)) *
                 100
-              ).toFixed(2)
+              ).toFixed(0)
             : 0
         }% done)`
       );
