@@ -8,18 +8,31 @@
 
 ## Extension Settings
 
-None for now, will probably add timer option.
-
 This extension contributes the following settings:
 
-- `prindicator.authenticateGithub`: signin to github
-- Accessed via `cmd+shift+p` : `> 'PR Indicator'`
+---
+
+#### All extension commands are grouped as: `PR Indicator: *`
+
+---
+
+| Command                      | Description                                           |
+| ---------------------------- | ----------------------------------------------------- |
+| `Authenticate To GitHub`     | Login to github if initial process fails              |
+| `Set Refresh Timer`          | Set refresh interval to GitHub (>= 5min)              |
+| `Display Repository Summary` | Show Repository Summary _(you've completed 5/10 prs)_ |
 
 ## Known Issues
 
-Probably a lot :)
+--
 
 ## Release Notes
+
+### 1.0.2
+
+- User stored settings
+- Set custom interval to github _(15min by default)_
+- Toggle summary message _(Off by default)_
 
 ### 1.0.0
 

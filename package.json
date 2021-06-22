@@ -7,7 +7,7 @@
     "url": "https://github.com/joelmagner/prindicator"
   },
   "publisher": "MagnerJoel",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "engines": {
     "vscode": "^1.54.0"
   },
@@ -26,7 +26,17 @@
     "commands": [
       {
         "command": "prindicator.authenticateGithub",
-        "title": "Authenticate To Github",
+        "title": "Authenticate To GitHub",
+        "category": "PR Indicator"
+      },
+      {
+        "command": "prindicator.displaySummary",
+        "title": "Display Repository Summary",
+        "category": "PR Indicator"
+      },
+      {
+        "command": "prindicator.setRefreshTimer",
+        "title": "Set Refresh Timer",
         "category": "PR Indicator"
       }
     ]

@@ -3,9 +3,6 @@ import { Credentials } from "./GitHubOAuth";
 import { Octokit } from "@octokit/rest";
 
 export class PullRequests {
-  _view?: vscode.WebviewView;
-  _doc?: vscode.TextDocument;
-
   private _octokit!: Octokit;
   private _credentials: Credentials;
   private _userInfo?: any;
@@ -15,6 +12,29 @@ export class PullRequests {
 
   constructor(private readonly _context: vscode.ExtensionContext) {
     this._credentials = new Credentials();
+  }
+
+  public async setDisplaySummary(value: boolean): Promise<void> {
+    await this._context.globalState.update("displaySummary", value);
+  }
+
+  public getDisplaySummary(): boolean {
+    const state = this._context.globalState.get(
+      "displaySummary",
+      false
+    ) as boolean;
+    return state;
+  }
+
+  public async setUpdateTimer(value: number): Promise<void> {
+    await this._context.globalState.update("updateTimer", value);
+  }
+
+  public getUpdateTimer(): number {
+    const timer = this._context.globalState.get("updateTimer", 15);
+    if (timer && timer >= 5) return timer;
+
+    return 15; // 15 min default.
   }
 
   public async authenticateGithub() {
@@ -85,7 +105,10 @@ export class PullRequests {
 
       if (isOwnPr) this.META_DATA.isOwn++;
 
-      if (!isOwnPr && this.wasRecentPullRequest(prs[pr].created_at, 15)) {
+      if (
+        !isOwnPr &&
+        this.wasRecentPullRequest(prs[pr].created_at, this.getUpdateTimer())
+      ) {
         vscode.window
           .showInformationMessage(
             `🚀 Pull Request #${prs[pr].number} from '${prs[pr].user?.login}' just arrived!`,
@@ -101,6 +124,8 @@ export class PullRequests {
 
     if (this.INITIAL_MESSAGE) {
       this.INITIAL_MESSAGE = false;
+      if (!this.getDisplaySummary()) return;
+
       vscode.window.showInformationMessage(
         `There are ${
           this.META_DATA.prs - this.META_DATA.isOwn

@@ -56,7 +56,7 @@ export async function activate(context: vscode.ExtensionContext) {
     } else {
       await pullRequests.checkForNewPRs(git.owner, git.repo);
     }
-  }, 15 * 60 * 60); //TODO: ändra till 5min eller ngt.
+  }, pullRequests.getUpdateTimer()); //TODO: ändra till 5min eller ngt.
 
   context.subscriptions.push(
     vscode.commands.registerCommand(
@@ -73,6 +73,35 @@ export async function activate(context: vscode.ExtensionContext) {
         );
       }
     )
+  );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand("prindicator.displaySummary", async () => {
+      vscode.window
+        .showQuickPick(["Yes", "No"], {
+          placeHolder: `Set wheather to display a summary message or not. Currently: ${pullRequests.getDisplaySummary()}`,
+          canPickMany: false,
+        })
+        .then(async (selection) => {
+          if (!selection) return;
+          await pullRequests.setDisplaySummary(selection === "Yes");
+        });
+    })
+  );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand("prindicator.setUpdateTimer", async () => {
+      vscode.window
+        .showQuickPick(["5", "10", "15", "20", "25", "30", "50", "60"], {
+          placeHolder: `Set the update interval to GitHub. Current Value: ${pullRequests.getUpdateTimer()} minutes`,
+          canPickMany: false,
+        })
+        .then(async (selection) => {
+          if (!selection) return;
+          const duration = parseInt(selection);
+          await pullRequests.setUpdateTimer(duration);
+        });
+    })
   );
 
   // context.subscriptions.push(
@@ -112,12 +141,6 @@ export async function activate(context: vscode.ExtensionContext) {
   // context.subscriptions.push(
   //   vscode.commands.registerCommand("prindicator.displayNotification", () => {
   //     // HelloWorldPanel.createOrShow(context.extensionUri);
-  //   })
-  // );
-
-  // context.subscriptions.push(
-  //   vscode.commands.registerCommand("prindicator.askQuestion", async () => {
-  //     await retrieveGitInformation();
   //   })
   // );
 
