@@ -2,9 +2,14 @@
 
 ## Features
 
-- Shows a notification whenever a PR has been added to the current repo and how many of the current prs you've completed.
+- Shows a notification whenever a PR has been added to the current repo.
+![Notification](https://i.imgur.com/n7vO7QO.jpg)
+
+- Shows a notification of the current repo's status and how many prs you've completed.
+![Summary](https://i.imgur.com/siz40UI.jpg)
 
 - Can be used over SSH & HTTPS
+
 
 ## Extension Settings
 
